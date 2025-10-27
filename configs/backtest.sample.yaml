@@ -1,0 +1,63 @@
+mode: backtest
+
+logging:
+  level: INFO
+  file: logs/backtest.log
+
+monitoring:
+  journal: journals/backtest_trades.csv
+  alerts:
+    enabled: true
+    level: info
+
+data:
+  enable_yfinance: true
+  enable_alpaca: false
+  primary_timeframe: 1d
+  extra_timeframes: []
+
+trading:
+  symbols:
+    - SPY
+  strategy:
+    type: momentum
+    params:
+      fast_window: 20
+      slow_window: 60
+
+backtest:
+  start: 2022-01-01
+  end: 2023-01-01
+  initial_capital: 100000
+
+risk:
+  max_position_percent: 0.3
+  max_single_order_value: 150000
+  max_leverage: 2.0
+  sector_limits:
+    INDEX: 500000
+  symbol_sectors:
+    SPY: INDEX
+
+position_sizer:
+  type: fixed_fractional
+  params:
+    fraction: 0.05
+
+risk_controls:
+  drawdown:
+    max_total_drawdown: 0.25
+    max_intraday_drawdown: 0.1
+    flatten_on_breach: false
+  circuit_breaker:
+    price_drop_threshold: 0.1
+    cool_off_minutes: 15
+    flatten_on_trigger: false
+
+optimizer:
+  enabled: true
+  hrp_enabled: true
+  bl_tau: 0.1
+  risk_aversion: 2.5
+  sector_limits:
+    INDEX: 0.7

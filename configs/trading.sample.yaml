@@ -1,0 +1,76 @@
+mode: paper
+
+logging:
+  level: INFO
+  file: logs/paper_trading.log
+
+monitoring:
+  journal: journals/paper_trades.csv
+  dashboard_image: monitoring/paper_dashboard.png
+  alerts:
+    enabled: true
+    level: warning
+
+data:
+  enable_yfinance: true
+  enable_alpaca: true
+  primary_timeframe: 1m
+
+trading:
+  symbols:
+    - SPY
+  run_seconds: 120
+  historical_lookback_days: 180
+  strategy:
+    type: momentum
+    params:
+      fast_window: 12
+      slow_window: 48
+    prediction_return_threshold: 0.0005
+
+risk:
+  max_position_percent: 0.3
+  max_single_order_value: 150000
+  max_leverage: 1.5
+  max_daily_loss: 5000
+  sector_limits:
+    INDEX: 500000
+  symbol_sectors:
+    SPY: INDEX
+
+position_sizer:
+  type: volatility
+  params:
+    risk_fraction: 0.02
+
+risk_controls:
+  drawdown:
+    max_total_drawdown: 0.2
+    max_intraday_drawdown: 0.07
+    flatten_on_breach: true
+  circuit_breaker:
+    price_drop_threshold: 0.08
+    cool_off_minutes: 30
+    flatten_on_trigger: true
+
+optimizer:
+  enabled: true
+  ewma_window: 252
+  ewma_decay: 0.97
+  hrp_enabled: true
+  bl_tau: 0.05
+  risk_aversion: 3.0
+  annealing_config:
+    iterations: 600
+    temperature: 1.2
+    cooling_rate: 0.993
+    return_weight: 1.0
+    transaction_cost_penalty: 1.0
+  sector_limits:
+    INDEX: 0.6
+  transaction_costs:
+    SPY: 0.0005
+  market_views:
+    SPY: 0.07
+  view_confidence:
+    SPY: 0.8

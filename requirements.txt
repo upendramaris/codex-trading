@@ -1,0 +1,16 @@
+pandas
+numpy
+yfinance
+alpaca-py
+backtesting.py
+scikit-learn
+tensorflow
+torch
+xgboost
+matplotlib
+pandas-market-calendars
+pyyaml
+hmmlearn
+requests
+websocket-client
+python-dotenv
