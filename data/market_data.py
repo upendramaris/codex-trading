@@ -15,6 +15,7 @@ from alpaca.data.historical.stock import StockHistoricalDataClient
 from alpaca.data.live.stock import StockDataStream
 from alpaca.data.models import Bar
 from alpaca.data.requests import StockBarsRequest
+from alpaca.data.enums import DataFeed
 from alpaca.data.timeframe import TimeFrame, TimeFrameUnit
 
 from config import settings
@@ -156,6 +157,7 @@ class MarketDataFetcher:
             start=start,
             end=end,
             adjustment=adjustment,
+            feed=DataFeed.IEX,
         )
         dataset = self._alpaca_client.get_stock_bars(request)
         if dataset.df.empty:

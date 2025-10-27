@@ -4,16 +4,19 @@ Main trading bot orchestrating data pipeline, strategies, risk management, and b
 
 from __future__ import annotations
 
+import json
+import time
 from collections import defaultdict
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Callable, Dict, Iterable, List, Optional
 
 import pandas as pd
 import pandas_market_calendars as mcal
 
 from brokers import AlpacaPaperBroker, RiskControl, RiskParameters
-from data import FeatureEngineer, FeatureEngineeringOutput, MarketDataFetcher
-from ml import PredictionEngine
+from data import MarketDataFetcher
+from ml import FeatureEngineer, FeatureEngineeringOutput, ModelArtifact, PredictionEngine
 from ml.models import ModelWrapper
 from strategies import (
     MLSignalStrategy,
@@ -154,6 +157,8 @@ class TradingBot:
         if self.config.ml_models:
             for model in self.config.ml_models:
                 self.prediction_engine.register_model(model.name, model)
+        elif self.config.strategy_type == "ml":
+            self._load_prediction_artifacts()
 
         self.strategy_handler = self._build_strategy_handler(engineered_outputs)
 
@@ -185,12 +190,19 @@ class TradingBot:
         if self.trading_loop is None:
             self.prepare()
 
-        now = pd.Timestamp.utcnow().tz_localize("UTC")
+        now = pd.Timestamp.now(tz="UTC")
         if not self._is_market_open(now):
             next_open = self._next_market_open(now)
-            self.logger.info("Market is currently closed. Next open: %s", next_open)
+            if next_open is None:
+                self.logger.warning("Market calendar returned no future open. Exiting run loop.")
+                self._emit("market_closed", {"timestamp": now, "next_open": None})
+                return
+            self.logger.info("Market closed. Sleeping until next open at %s", next_open)
             self._emit("market_closed", {"timestamp": now, "next_open": next_open})
-            return
+            sleep_seconds = max((next_open - now).total_seconds(), 0)
+            time.sleep(sleep_seconds)
+
+        now = pd.Timestamp.now(tz="UTC")
 
         self._emit("market_open", {"timestamp": now})
         self.trading_loop.start(run_for_seconds=self.config.run_seconds)
@@ -305,10 +317,55 @@ class TradingBot:
             equal_weight = 1.0 / len(self.config.symbols)
             return {sym: equal_weight for sym in self.config.symbols}
 
+    def _load_prediction_artifacts(self) -> None:
+        artifacts_dir = Path("artifacts")
+        if not artifacts_dir.exists():
+            self.logger.warning("No artifacts directory found for ML strategy; skipping model loading.")
+            return
+        loaded = 0
+        for meta_file in artifacts_dir.rglob("*.json"):
+            try:
+                data = json.loads(meta_file.read_text())
+            except Exception:
+                continue
+            if not isinstance(data, dict) or "model_type" not in data or "name" not in data:
+                continue
+            model_type = data["model_type"]
+            name = data["name"]
+            if model_type == "xgboost":
+                if not meta_file.name.endswith("_meta.json"):
+                    continue
+                model_path = meta_file.with_name(meta_file.name.replace("_meta", ""))
+            elif model_type == "random_forest":
+                model_path = meta_file.with_suffix(".joblib")
+            elif model_type == "lstm":
+                model_path = meta_file.with_suffix(".pt")
+            else:
+                continue
+            if not model_path.exists():
+                self.logger.warning("Model file missing for artifact %s (%s)", name, model_type)
+                continue
+            artifact = ModelArtifact(
+                name=name,
+                model_type=model_type,
+                path=model_path,
+                params=data.get("params", {}),
+                metrics=data.get("metrics", {}),
+            )
+            try:
+                self.prediction_engine.load_and_register(artifact)
+                loaded += 1
+            except Exception as exc:  # pragma: no cover - defensive logging
+                self.logger.exception("Failed to load model artifact %s: %s", model_path, exc)
+        if loaded == 0:
+            self.logger.warning("No ML model artifacts loaded. Ensure ./artifacts contains trained models.")
+        else:
+            self.logger.info("Loaded %d ML model artifacts for prediction engine.", loaded)
+
     def _is_market_open(self, timestamp: pd.Timestamp) -> bool:
         timestamp = timestamp.tz_convert("America/New_York")
-        session = timestamp.normalize()
-        schedule = self.market_calendar.schedule(start=session, end=session)
+        session_date = timestamp.date()
+        schedule = self.market_calendar.schedule(start_date=session_date, end_date=session_date)
         if schedule.empty:
             return False
         open_time = schedule.iloc[0]["market_open"].tz_convert("America/New_York")
@@ -318,8 +375,8 @@ class TradingBot:
     def _next_market_open(self, timestamp: pd.Timestamp) -> Optional[pd.Timestamp]:
         timestamp = timestamp.tz_convert("America/New_York")
         schedule = self.market_calendar.schedule(
-            start=timestamp.normalize(),
-            end=timestamp.normalize() + pd.Timedelta(days=10),
+            start_date=timestamp.date(),
+            end_date=(timestamp + pd.Timedelta(days=10)).date(),
         )
         future = schedule[schedule["market_open"] > timestamp]
         if future.empty:

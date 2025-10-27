@@ -270,7 +270,7 @@ class EnsembleRegressor(ModelWrapper):
                 model.fit(X_train, y_train)
                 preds = model.predict(X_val)
                 target = y_val.iloc[self.sequence_length - 1 :].to_numpy()
-                rmse_scores.append(mean_squared_error(target, preds, squared=False))
+                rmse_scores.append(float(np.sqrt(mean_squared_error(target, preds))))
                 mae_scores.append(mean_absolute_error(target, preds))
 
             mean_rmse = float(np.mean(rmse_scores))
@@ -289,7 +289,7 @@ class EnsembleRegressor(ModelWrapper):
         preds_full = best_model.predict(X)
         target_full = y.iloc[self.sequence_offset :].to_numpy()
         return {
-            "rmse": mean_squared_error(target_full, preds_full, squared=False),
+            "rmse": float(np.sqrt(mean_squared_error(target_full, preds_full))),
             "mae": mean_absolute_error(target_full, preds_full),
         }
 
@@ -305,7 +305,7 @@ class EnsembleRegressor(ModelWrapper):
                 model = RandomForestRegressor(**params, random_state=42, n_jobs=-1)
                 model.fit(X.iloc[train_idx], y.iloc[train_idx])
                 preds = model.predict(X.iloc[val_idx])
-                rmse_scores.append(mean_squared_error(y.iloc[val_idx], preds, squared=False))
+                rmse_scores.append(float(np.sqrt(mean_squared_error(y.iloc[val_idx], preds))))
                 mae_scores.append(mean_absolute_error(y.iloc[val_idx], preds))
 
             mean_rmse = float(np.mean(rmse_scores))
@@ -318,7 +318,7 @@ class EnsembleRegressor(ModelWrapper):
         self.rf_model = best_model
         preds_full = best_model.predict(X)
         return {
-            "rmse": mean_squared_error(y, preds_full, squared=False),
+            "rmse": float(np.sqrt(mean_squared_error(y, preds_full))),
             "mae": mean_absolute_error(y, preds_full),
         }
 
@@ -339,7 +339,7 @@ class EnsembleRegressor(ModelWrapper):
                 )
                 model.fit(X.iloc[train_idx], y.iloc[train_idx], eval_set=[(X.iloc[val_idx], y.iloc[val_idx])], verbose=False)
                 preds = model.predict(X.iloc[val_idx])
-                rmse_scores.append(mean_squared_error(y.iloc[val_idx], preds, squared=False))
+                rmse_scores.append(float(np.sqrt(mean_squared_error(y.iloc[val_idx], preds))))
                 mae_scores.append(mean_absolute_error(y.iloc[val_idx], preds))
 
             mean_rmse = float(np.mean(rmse_scores))
@@ -357,7 +357,7 @@ class EnsembleRegressor(ModelWrapper):
         self.xgb_model = best_model
         preds_full = best_model.predict(X)
         return {
-            "rmse": mean_squared_error(y, preds_full, squared=False),
+            "rmse": float(np.sqrt(mean_squared_error(y, preds_full))),
             "mae": mean_absolute_error(y, preds_full),
         }
 
@@ -383,7 +383,7 @@ class EnsembleRegressor(ModelWrapper):
             self.fit(X.iloc[train_idx], y.iloc[train_idx])
             preds = self.predict(X.iloc[val_idx])
             target = y.iloc[val_idx][self.sequence_offset :]
-            rmse_scores.append(mean_squared_error(target, preds, squared=False))
+            rmse_scores.append(float(np.sqrt(mean_squared_error(target, preds))))
             mae_scores.append(mean_absolute_error(target, preds))
 
         return {

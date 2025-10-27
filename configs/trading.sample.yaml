@@ -16,17 +16,28 @@ data:
   enable_alpaca: true
   primary_timeframe: 1m
 
+#trading:
+#  symbols:
+#    - SPY
+#  run_seconds: null
+#  historical_lookback_days: 180
+#  strategy:
+#    type: momentum
+#    params:
+#      fast_window: 12
+#      slow_window: 48
+#    prediction_return_threshold: 0.0005
+
 trading:
   symbols:
     - SPY
-  run_seconds: 120
+  run_seconds: null
   historical_lookback_days: 180
   strategy:
-    type: momentum
+    type: ml
     params:
-      fast_window: 12
-      slow_window: 48
-    prediction_return_threshold: 0.0005
+      confidence_threshold: 0.2   # adjust as you like
+
 
 risk:
   max_position_percent: 0.3

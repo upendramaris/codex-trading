@@ -1,0 +1,499 @@
+2025-10-27 15:27:26,555 [INFO] execution - Starting trading execution in paper mode using config configs\trading.sample.yaml
+2025-10-27 15:27:27,797 [INFO] TradingBot - Preparing trading bot for symbols SPY
+2025-10-27 15:27:28,387 [CRITICAL] AlertService - Fatal trading error: {"message":"subscription does not permit querying recent SIP data"}
+ | context={}
+2025-10-27 15:27:28,387 [ERROR] execution - Fatal trading error: {"message":"subscription does not permit querying recent SIP data"}
+Traceback (most recent call last):
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 198, in _one_request
+    response.raise_for_status()
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\requests\models.py", line 1026, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://data.alpaca.markets/v2/stocks/bars?start=2025-04-30T20%3A27%3A27.797365%2B00%3A00&end=2025-10-27T20%3A27%3A27.797365%2B00%3A00&timeframe=1Hour&adjustment=raw&symbols=SPY&limit=10000
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 180, in run_live_or_paper
+    bot.prepare()
+  File "D:\GitHub\codex-trading\trading\bot.py", line 131, in prepare
+    historical = self.data_fetcher.fetch_historical(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\data\market_data.py", line 79, in fetch_historical
+    return self._fetch_historical_alpaca(symbols, start, end, timeframe_key, adjustment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\data\market_data.py", line 160, in _fetch_historical_alpaca
+    dataset = self._alpaca_client.get_stock_bars(request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\data\historical\stock.py", line 87, in get_stock_bars
+    raw_bars = self._get_marketdata(
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 393, in _get_marketdata
+    response = self.get(path=path, data=params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 225, in get
+    return self._request("GET", path, data, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 131, in _request
+    return self._one_request(method, url, opts, retry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 207, in _one_request
+    raise APIError(error, http_error)
+alpaca.common.exceptions.APIError: {"message":"subscription does not permit querying recent SIP data"}
+
+2025-10-27 15:27:28,550 [INFO] TradingDashboard - 
+==== PAPER TRADING DASHBOARD ====
+Equity: 100,000.00
+Cash: 100,000.00
+Buying Power: 200,000.00
+
+Open Positions:
+ - None
+
+Recent Trades:
+2025-10-27 15:27:36,437 [INFO] execution - Dashboard figure saved to monitoring/paper_dashboard.png
+2025-10-27 15:27:36,437 [ERROR] execution - Unrecoverable error: {"message":"subscription does not permit querying recent SIP data"}
+Traceback (most recent call last):
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 198, in _one_request
+    response.raise_for_status()
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\requests\models.py", line 1026, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://data.alpaca.markets/v2/stocks/bars?start=2025-04-30T20%3A27%3A27.797365%2B00%3A00&end=2025-10-27T20%3A27%3A27.797365%2B00%3A00&timeframe=1Hour&adjustment=raw&symbols=SPY&limit=10000
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 292, in main
+    run_live_or_paper(config, mode, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 180, in run_live_or_paper
+    bot.prepare()
+  File "D:\GitHub\codex-trading\trading\bot.py", line 131, in prepare
+    historical = self.data_fetcher.fetch_historical(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\data\market_data.py", line 79, in fetch_historical
+    return self._fetch_historical_alpaca(symbols, start, end, timeframe_key, adjustment)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\data\market_data.py", line 160, in _fetch_historical_alpaca
+    dataset = self._alpaca_client.get_stock_bars(request)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\data\historical\stock.py", line 87, in get_stock_bars
+    raw_bars = self._get_marketdata(
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 393, in _get_marketdata
+    response = self.get(path=path, data=params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 225, in get
+    return self._request("GET", path, data, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 131, in _request
+    return self._one_request(method, url, opts, retry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 207, in _one_request
+    raise APIError(error, http_error)
+alpaca.common.exceptions.APIError: {"message":"subscription does not permit querying recent SIP data"}
+
+2025-10-27 15:29:58,405 [INFO] execution - Starting trading execution in paper mode using config configs\trading.sample.yaml
+2025-10-27 15:29:58,707 [INFO] TradingBot - Preparing trading bot for symbols SPY
+2025-10-27 15:29:59,565 [INFO] TradingBot - Configuring strategy handler: momentum
+2025-10-27 15:29:59,648 [CRITICAL] AlertService - Fatal trading error: Cannot localize tz-aware Timestamp, use tz_convert for conversions | context={}
+2025-10-27 15:29:59,648 [ERROR] execution - Fatal trading error: Cannot localize tz-aware Timestamp, use tz_convert for conversions
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 182, in run_live_or_paper
+    bot.run()
+  File "D:\GitHub\codex-trading\trading\bot.py", line 188, in run
+    now = pd.Timestamp.utcnow().tz_localize("UTC")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/tslibs/timestamps.pyx", line 2299, in pandas._libs.tslibs.timestamps.Timestamp.tz_localize
+TypeError: Cannot localize tz-aware Timestamp, use tz_convert for conversions
+2025-10-27 15:29:59,728 [INFO] execution - Performance summary: {'total_return': 0.0, 'annualized_return': 0.0, 'annualized_volatility': 0.0, 'sharpe_ratio': 0.0, 'sortino_ratio': 0.0, 'calmar_ratio': 0.0, 'max_drawdown': 0.0, 'downside_deviation': 0.0, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': 0.0, 'average_win': 0.0, 'average_loss': 0.0, 'risk_adjusted_return': 0.0}
+2025-10-27 15:29:59,806 [INFO] TradingDashboard - 
+==== PAPER TRADING DASHBOARD ====
+Equity: 100,000.00
+Cash: 100,000.00
+Buying Power: 200,000.00
+
+Open Positions:
+ - None
+
+Recent Trades:
+
+Performance Metrics:
+ - average_correlation: 0.0000
+ - total_return: 0.0000
+ - annualized_return: 0.0000
+ - annualized_volatility: 0.0000
+ - sharpe_ratio: 0.0000
+ - sortino_ratio: 0.0000
+ - calmar_ratio: 0.0000
+ - max_drawdown: 0.0000
+ - downside_deviation: 0.0000
+ - win_rate: 0.0000
+ - profit_factor: 0.0000
+ - average_trade_pnl: 0.0000
+ - average_win: 0.0000
+ - average_loss: 0.0000
+ - risk_adjusted_return: 0.0000
+2025-10-27 15:30:00,175 [INFO] execution - Dashboard figure saved to monitoring/paper_dashboard.png
+2025-10-27 15:30:00,175 [ERROR] execution - Unrecoverable error: Cannot localize tz-aware Timestamp, use tz_convert for conversions
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 292, in main
+    run_live_or_paper(config, mode, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 182, in run_live_or_paper
+    bot.run()
+  File "D:\GitHub\codex-trading\trading\bot.py", line 188, in run
+    now = pd.Timestamp.utcnow().tz_localize("UTC")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/tslibs/timestamps.pyx", line 2299, in pandas._libs.tslibs.timestamps.Timestamp.tz_localize
+TypeError: Cannot localize tz-aware Timestamp, use tz_convert for conversions
+2025-10-27 15:31:58,136 [INFO] execution - Starting trading execution in paper mode using config configs\trading.sample.yaml
+2025-10-27 15:31:58,926 [INFO] TradingBot - Preparing trading bot for symbols SPY
+2025-10-27 15:31:59,887 [INFO] TradingBot - Configuring strategy handler: momentum
+2025-10-27 15:31:59,978 [CRITICAL] AlertService - Fatal trading error: MarketCalendar.schedule() missing 2 required positional arguments: 'start_date' and 'end_date' | context={}
+2025-10-27 15:31:59,978 [ERROR] execution - Fatal trading error: MarketCalendar.schedule() missing 2 required positional arguments: 'start_date' and 'end_date'
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 182, in run_live_or_paper
+    bot.run()
+  File "D:\GitHub\codex-trading\trading\bot.py", line 189, in run
+    if not self._is_market_open(now):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\trading\bot.py", line 311, in _is_market_open
+    schedule = self.market_calendar.schedule(start=session, end=session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: MarketCalendar.schedule() missing 2 required positional arguments: 'start_date' and 'end_date'
+2025-10-27 15:32:00,066 [INFO] execution - Performance summary: {'total_return': 0.0, 'annualized_return': 0.0, 'annualized_volatility': 0.0, 'sharpe_ratio': 0.0, 'sortino_ratio': 0.0, 'calmar_ratio': 0.0, 'max_drawdown': 0.0, 'downside_deviation': 0.0, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': 0.0, 'average_win': 0.0, 'average_loss': 0.0, 'risk_adjusted_return': 0.0}
+2025-10-27 15:32:00,152 [INFO] TradingDashboard - 
+==== PAPER TRADING DASHBOARD ====
+Equity: 100,000.00
+Cash: 100,000.00
+Buying Power: 200,000.00
+
+Open Positions:
+ - None
+
+Recent Trades:
+
+Performance Metrics:
+ - average_correlation: 0.0000
+ - total_return: 0.0000
+ - annualized_return: 0.0000
+ - annualized_volatility: 0.0000
+ - sharpe_ratio: 0.0000
+ - sortino_ratio: 0.0000
+ - calmar_ratio: 0.0000
+ - max_drawdown: 0.0000
+ - downside_deviation: 0.0000
+ - win_rate: 0.0000
+ - profit_factor: 0.0000
+ - average_trade_pnl: 0.0000
+ - average_win: 0.0000
+ - average_loss: 0.0000
+ - risk_adjusted_return: 0.0000
+2025-10-27 15:32:00,518 [INFO] execution - Dashboard figure saved to monitoring/paper_dashboard.png
+2025-10-27 15:32:00,518 [ERROR] execution - Unrecoverable error: MarketCalendar.schedule() missing 2 required positional arguments: 'start_date' and 'end_date'
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 292, in main
+    run_live_or_paper(config, mode, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 182, in run_live_or_paper
+    bot.run()
+  File "D:\GitHub\codex-trading\trading\bot.py", line 189, in run
+    if not self._is_market_open(now):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\trading\bot.py", line 311, in _is_market_open
+    schedule = self.market_calendar.schedule(start=session, end=session)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: MarketCalendar.schedule() missing 2 required positional arguments: 'start_date' and 'end_date'
+2025-10-27 15:33:22,586 [INFO] execution - Starting trading execution in paper mode using config configs\trading.sample.yaml
+2025-10-27 15:33:23,031 [INFO] TradingBot - Preparing trading bot for symbols SPY
+2025-10-27 15:33:24,057 [INFO] TradingBot - Configuring strategy handler: momentum
+2025-10-27 15:33:24,248 [INFO] TradingBot - Market is currently closed. Next open: 2025-10-28 13:30:00+00:00
+2025-10-27 15:33:24,337 [INFO] execution - Performance summary: {'total_return': 0.0, 'annualized_return': 0.0, 'annualized_volatility': 0.0, 'sharpe_ratio': 0.0, 'sortino_ratio': 0.0, 'calmar_ratio': 0.0, 'max_drawdown': 0.0, 'downside_deviation': 0.0, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': 0.0, 'average_win': 0.0, 'average_loss': 0.0, 'risk_adjusted_return': 0.0}
+2025-10-27 15:33:24,425 [INFO] TradingDashboard - 
+==== PAPER TRADING DASHBOARD ====
+Equity: 100,000.00
+Cash: 100,000.00
+Buying Power: 200,000.00
+
+Open Positions:
+ - None
+
+Recent Trades:
+
+Performance Metrics:
+ - average_correlation: 0.0000
+ - total_return: 0.0000
+ - annualized_return: 0.0000
+ - annualized_volatility: 0.0000
+ - sharpe_ratio: 0.0000
+ - sortino_ratio: 0.0000
+ - calmar_ratio: 0.0000
+ - max_drawdown: 0.0000
+ - downside_deviation: 0.0000
+ - win_rate: 0.0000
+ - profit_factor: 0.0000
+ - average_trade_pnl: 0.0000
+ - average_win: 0.0000
+ - average_loss: 0.0000
+ - risk_adjusted_return: 0.0000
+2025-10-27 15:33:24,792 [INFO] execution - Dashboard figure saved to monitoring/paper_dashboard.png
+2025-10-27 15:33:24,792 [INFO] execution - Execution completed successfully.
+2025-10-27 15:58:22,720 [INFO] execution - Starting trading execution in paper mode using config configs\trading.sample.yaml
+2025-10-27 15:58:23,620 [INFO] TradingBot - Preparing trading bot for symbols SPY
+2025-10-27 15:58:25,092 [INFO] TradingBot - Loaded 3 ML model artifacts for prediction engine.
+2025-10-27 15:58:25,092 [INFO] TradingBot - Configuring strategy handler: ml
+2025-10-27 15:58:25,296 [INFO] TradingBot - Market is currently closed. Next open: 2025-10-28 13:30:00+00:00
+2025-10-27 15:58:25,378 [INFO] execution - Performance summary: {'total_return': 0.0, 'annualized_return': 0.0, 'annualized_volatility': 0.0, 'sharpe_ratio': 0.0, 'sortino_ratio': 0.0, 'calmar_ratio': 0.0, 'max_drawdown': 0.0, 'downside_deviation': 0.0, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': 0.0, 'average_win': 0.0, 'average_loss': 0.0, 'risk_adjusted_return': 0.0}
+2025-10-27 15:58:25,458 [INFO] TradingDashboard - 
+==== PAPER TRADING DASHBOARD ====
+Equity: 100,000.00
+Cash: 100,000.00
+Buying Power: 200,000.00
+
+Open Positions:
+ - None
+
+Recent Trades:
+
+Performance Metrics:
+ - average_correlation: 0.0000
+ - total_return: 0.0000
+ - annualized_return: 0.0000
+ - annualized_volatility: 0.0000
+ - sharpe_ratio: 0.0000
+ - sortino_ratio: 0.0000
+ - calmar_ratio: 0.0000
+ - max_drawdown: 0.0000
+ - downside_deviation: 0.0000
+ - win_rate: 0.0000
+ - profit_factor: 0.0000
+ - average_trade_pnl: 0.0000
+ - average_win: 0.0000
+ - average_loss: 0.0000
+ - risk_adjusted_return: 0.0000
+2025-10-27 15:58:25,847 [INFO] execution - Dashboard figure saved to monitoring/paper_dashboard.png
+2025-10-27 15:58:25,847 [INFO] execution - Execution completed successfully.
+2025-10-27 16:05:15,471 [INFO] execution - Starting trading execution in paper mode using config configs\trading.sample.yaml
+2025-10-27 16:05:16,128 [INFO] TradingBot - Preparing trading bot for symbols SPY
+2025-10-27 16:05:17,664 [INFO] TradingBot - Loaded 3 ML model artifacts for prediction engine.
+2025-10-27 16:05:17,666 [INFO] TradingBot - Configuring strategy handler: ml
+2025-10-27 16:05:17,858 [INFO] TradingBot - Market is currently closed. Next open: 2025-10-28 13:30:00+00:00
+2025-10-27 16:05:17,939 [INFO] execution - Performance summary: {'total_return': 0.0, 'annualized_return': 0.0, 'annualized_volatility': 0.0, 'sharpe_ratio': 0.0, 'sortino_ratio': 0.0, 'calmar_ratio': 0.0, 'max_drawdown': 0.0, 'downside_deviation': 0.0, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': 0.0, 'average_win': 0.0, 'average_loss': 0.0, 'risk_adjusted_return': 0.0}
+2025-10-27 16:05:18,016 [INFO] TradingDashboard - 
+==== PAPER TRADING DASHBOARD ====
+Equity: 100,000.00
+Cash: 100,000.00
+Buying Power: 200,000.00
+
+Open Positions:
+ - None
+
+Recent Trades:
+
+Performance Metrics:
+ - average_correlation: 0.0000
+ - total_return: 0.0000
+ - annualized_return: 0.0000
+ - annualized_volatility: 0.0000
+ - sharpe_ratio: 0.0000
+ - sortino_ratio: 0.0000
+ - calmar_ratio: 0.0000
+ - max_drawdown: 0.0000
+ - downside_deviation: 0.0000
+ - win_rate: 0.0000
+ - profit_factor: 0.0000
+ - average_trade_pnl: 0.0000
+ - average_win: 0.0000
+ - average_loss: 0.0000
+ - risk_adjusted_return: 0.0000
+2025-10-27 16:05:18,369 [INFO] execution - Dashboard figure saved to monitoring/paper_dashboard.png
+2025-10-27 16:05:18,370 [INFO] execution - Execution completed successfully.
+2025-10-27 16:06:21,364 [INFO] execution - Starting trading execution in paper mode using config configs\trading.sample.yaml
+2025-10-27 16:06:21,705 [INFO] TradingBot - Preparing trading bot for symbols SPY
+2025-10-27 16:06:22,737 [INFO] TradingBot - Loaded 3 ML model artifacts for prediction engine.
+2025-10-27 16:06:22,737 [INFO] TradingBot - Configuring strategy handler: ml
+2025-10-27 16:06:22,931 [INFO] TradingBot - Market is currently closed. Next open: 2025-10-28 13:30:00+00:00
+2025-10-27 16:06:23,012 [INFO] execution - Performance summary: {'total_return': 0.0, 'annualized_return': 0.0, 'annualized_volatility': 0.0, 'sharpe_ratio': 0.0, 'sortino_ratio': 0.0, 'calmar_ratio': 0.0, 'max_drawdown': 0.0, 'downside_deviation': 0.0, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': 0.0, 'average_win': 0.0, 'average_loss': 0.0, 'risk_adjusted_return': 0.0}
+2025-10-27 16:06:23,092 [INFO] TradingDashboard - 
+==== PAPER TRADING DASHBOARD ====
+Equity: 100,000.00
+Cash: 100,000.00
+Buying Power: 200,000.00
+
+Open Positions:
+ - None
+
+Recent Trades:
+
+Performance Metrics:
+ - average_correlation: 0.0000
+ - total_return: 0.0000
+ - annualized_return: 0.0000
+ - annualized_volatility: 0.0000
+ - sharpe_ratio: 0.0000
+ - sortino_ratio: 0.0000
+ - calmar_ratio: 0.0000
+ - max_drawdown: 0.0000
+ - downside_deviation: 0.0000
+ - win_rate: 0.0000
+ - profit_factor: 0.0000
+ - average_trade_pnl: 0.0000
+ - average_win: 0.0000
+ - average_loss: 0.0000
+ - risk_adjusted_return: 0.0000
+2025-10-27 16:06:23,440 [INFO] execution - Dashboard figure saved to monitoring/paper_dashboard.png
+2025-10-27 16:06:23,440 [INFO] execution - Execution completed successfully.
+2025-10-27 16:07:26,386 [INFO] execution - Starting trading execution in paper mode using config configs\trading.sample.yaml
+2025-10-27 16:07:26,948 [INFO] TradingBot - Preparing trading bot for symbols SPY
+2025-10-27 16:07:28,025 [INFO] TradingBot - Loaded 3 ML model artifacts for prediction engine.
+2025-10-27 16:07:28,026 [INFO] TradingBot - Configuring strategy handler: ml
+2025-10-27 16:07:28,221 [INFO] TradingBot - Market is currently closed. Next open: 2025-10-28 13:30:00+00:00
+2025-10-27 16:07:28,303 [INFO] execution - Performance summary: {'total_return': 0.0, 'annualized_return': 0.0, 'annualized_volatility': 0.0, 'sharpe_ratio': 0.0, 'sortino_ratio': 0.0, 'calmar_ratio': 0.0, 'max_drawdown': 0.0, 'downside_deviation': 0.0, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': 0.0, 'average_win': 0.0, 'average_loss': 0.0, 'risk_adjusted_return': 0.0}
+2025-10-27 16:07:28,380 [INFO] TradingDashboard - 
+==== PAPER TRADING DASHBOARD ====
+Equity: 100,000.00
+Cash: 100,000.00
+Buying Power: 200,000.00
+
+Open Positions:
+ - None
+
+Recent Trades:
+
+Performance Metrics:
+ - average_correlation: 0.0000
+ - total_return: 0.0000
+ - annualized_return: 0.0000
+ - annualized_volatility: 0.0000
+ - sharpe_ratio: 0.0000
+ - sortino_ratio: 0.0000
+ - calmar_ratio: 0.0000
+ - max_drawdown: 0.0000
+ - downside_deviation: 0.0000
+ - win_rate: 0.0000
+ - profit_factor: 0.0000
+ - average_trade_pnl: 0.0000
+ - average_win: 0.0000
+ - average_loss: 0.0000
+ - risk_adjusted_return: 0.0000
+2025-10-27 16:07:28,725 [INFO] execution - Dashboard figure saved to monitoring/paper_dashboard.png
+2025-10-27 16:07:28,725 [INFO] execution - Execution completed successfully.
+2025-10-27 16:08:31,702 [INFO] execution - Starting trading execution in paper mode using config configs\trading.sample.yaml
+2025-10-27 16:08:32,225 [INFO] TradingBot - Preparing trading bot for symbols SPY
+2025-10-27 16:08:33,320 [INFO] TradingBot - Loaded 3 ML model artifacts for prediction engine.
+2025-10-27 16:08:33,320 [INFO] TradingBot - Configuring strategy handler: ml
+2025-10-27 16:08:33,515 [INFO] TradingBot - Market is currently closed. Next open: 2025-10-28 13:30:00+00:00
+2025-10-27 16:08:33,604 [INFO] execution - Performance summary: {'total_return': 0.0, 'annualized_return': 0.0, 'annualized_volatility': 0.0, 'sharpe_ratio': 0.0, 'sortino_ratio': 0.0, 'calmar_ratio': 0.0, 'max_drawdown': 0.0, 'downside_deviation': 0.0, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': 0.0, 'average_win': 0.0, 'average_loss': 0.0, 'risk_adjusted_return': 0.0}
+2025-10-27 16:08:33,686 [INFO] TradingDashboard - 
+==== PAPER TRADING DASHBOARD ====
+Equity: 100,000.00
+Cash: 100,000.00
+Buying Power: 200,000.00
+
+Open Positions:
+ - None
+
+Recent Trades:
+
+Performance Metrics:
+ - average_correlation: 0.0000
+ - total_return: 0.0000
+ - annualized_return: 0.0000
+ - annualized_volatility: 0.0000
+ - sharpe_ratio: 0.0000
+ - sortino_ratio: 0.0000
+ - calmar_ratio: 0.0000
+ - max_drawdown: 0.0000
+ - downside_deviation: 0.0000
+ - win_rate: 0.0000
+ - profit_factor: 0.0000
+ - average_trade_pnl: 0.0000
+ - average_win: 0.0000
+ - average_loss: 0.0000
+ - risk_adjusted_return: 0.0000
+2025-10-27 16:08:34,037 [INFO] execution - Dashboard figure saved to monitoring/paper_dashboard.png
+2025-10-27 16:08:34,038 [INFO] execution - Execution completed successfully.
+2025-10-27 16:09:37,025 [INFO] execution - Starting trading execution in paper mode using config configs\trading.sample.yaml
+2025-10-27 16:09:39,940 [ERROR] execution - Unrecoverable error: HTTPSConnectionPool(host='paper-api.alpaca.markets', port=443): Max retries exceeded with url: /v2/positions (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000001C62A97B390>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+Traceback (most recent call last):
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connection.py", line 198, in _new_conn
+    sock = connection.create_connection(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\util\connection.py", line 85, in create_connection
+    raise err
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\util\connection.py", line 73, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py", line 488, in _make_request
+    raise new_e
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py", line 464, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py", line 1093, in _validate_conn
+    conn.connect()
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connection.py", line 753, in connect
+    self.sock = sock = self._new_conn()
+                       ^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connection.py", line 213, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x000001C62A97B390>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+           ^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\urllib3\util\retry.py", line 519, in increment
+    raise MaxRetryError(_pool, url, reason) from reason  # type: ignore[arg-type]
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='paper-api.alpaca.markets', port=443): Max retries exceeded with url: /v2/positions (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000001C62A97B390>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 292, in main
+    run_live_or_paper(config, mode, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 139, in run_live_or_paper
+    bot = TradingBot(config=bot_config, data_fetcher=data_fetcher)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\trading\bot.py", line 79, in __init__
+    self.broker = broker or AlpacaPaperBroker(risk_control=risk_control, paper=config.paper_trading)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\brokers\alpaca_paper.py", line 44, in __init__
+    self.sync()
+  File "D:\GitHub\codex-trading\brokers\alpaca_paper.py", line 92, in sync
+    positions = self._client.get_all_positions()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\trading\client.py", line 244, in get_all_positions
+    response = self.get("/positions")
+               ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 225, in get
+    return self._request("GET", path, data, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 131, in _request
+    return self._one_request(method, url, opts, retry)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\alpaca\common\rest.py", line 195, in _one_request
+    response = self._session.request(method, url, **opts)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\requests\adapters.py", line 677, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='paper-api.alpaca.markets', port=443): Max retries exceeded with url: /v2/positions (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x000001C62A97B390>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+2025-10-27 16:12:47,743 [INFO] execution - Starting trading execution in paper mode using config configs\trading.sample.yaml
+2025-10-27 16:12:48,057 [INFO] TradingBot - Preparing trading bot for symbols SPY
+2025-10-27 16:12:49,273 [INFO] TradingBot - Loaded 3 ML model artifacts for prediction engine.
+2025-10-27 16:12:49,274 [INFO] TradingBot - Configuring strategy handler: ml
+2025-10-27 16:12:49,468 [INFO] TradingBot - Market closed. Sleeping until next open at 2025-10-28 13:30:00+00:00

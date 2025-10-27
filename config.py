@@ -46,7 +46,7 @@ def _env_json(key: str, default: Optional[Dict] = None) -> Dict:
 class AlpacaSettings:
     api_key: str = field(default_factory=lambda: _env_required("ALPACA_API_KEY"))
     api_secret: str = field(default_factory=lambda: _env_required("ALPACA_API_SECRET"))
-    base_url: str = field(default_factory=lambda: os.environ.get("ALPACA_BASE_URL", "https://paper-api.alpaca.markets"))
+    base_url: str = field(default_factory=lambda: os.environ.get("ALPACA_BASE_URL", "https://paper-api.alpaca.markets/v2"))
 
 
 @dataclass

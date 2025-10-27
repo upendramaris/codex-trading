@@ -2,7 +2,7 @@ pandas
 numpy
 yfinance
 alpaca-py
-backtesting.py
+backtesting
 scikit-learn
 tensorflow
 torch

@@ -147,9 +147,9 @@ class XGBoostReturnModel(ModelWrapper):
         X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, shuffle=False)
         self.model.fit(X_train, y_train, eval_set=[(X_val, y_val)], verbose=False)
         preds = self.model.predict(X_val)
-        rmse = mean_squared_error(y_val, preds, squared=False)
+        rmse = float(np.sqrt(mean_squared_error(y_val, preds)))
         self._fitted = True
-        return {"rmse": float(rmse)}
+        return {"rmse": rmse}
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
         self._check_fitted()

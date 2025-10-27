@@ -172,4 +172,4 @@ class TrainingPipeline:
         """Choose accuracy for classification targets and RMSE for regression."""
         if "class" in target or "signal" in target:
             return float(accuracy_score(y_true, y_pred))
-        return float(mean_squared_error(y_true, y_pred, squared=False))
+        return float(np.sqrt(mean_squared_error(y_true, y_pred)))
