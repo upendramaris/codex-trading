@@ -16,18 +16,29 @@ data:
   primary_timeframe: 1d
   extra_timeframes: []
 
+#trading:
+#  symbols:
+#    - SPY
+#  strategy:
+#    type: momentum
+#    params:
+#      fast_window: 20
+#      slow_window: 60
+
 trading:
   symbols:
     - SPY
+  run_seconds: null
+  historical_lookback_days: 180
   strategy:
-    type: momentum
+    type: ml
     params:
-      fast_window: 20
-      slow_window: 60
+      confidence_threshold: 0.2   # adjust as you like
+   
 
 backtest:
   start: 2022-01-01
-  end: 2023-01-01
+  end: 2025-01-01
   initial_capital: 100000
 
 risk:

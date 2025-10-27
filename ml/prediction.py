@@ -4,6 +4,8 @@ Prediction engine that converts model outputs into actionable trading signals.
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Dict, Optional
 
 import numpy as np
@@ -55,19 +57,44 @@ class PredictionEngine:
         if frame.empty:
             raise ValueError("No rows available after cleaning for inference.")
 
-        votes: Dict[str, np.ndarray] = {}
+        model_votes: Dict[str, np.ndarray] = {}
+        model_confidences: Dict[str, np.ndarray] = {}
+        effective_length = len(frame)
         for name, model in self.models.items():
-            predictions = model.predict(frame[self.feature_columns])
+            subset = frame[self.feature_columns]
+            predictions = model.predict(subset)
+            if predictions is None or len(predictions) == 0:
+                continue
+            effective_length = min(effective_length, len(predictions))
             if isinstance(model, RandomForestSignalModel):
-                prob = model.predict_proba(frame[self.feature_columns])
-                confidence = np.max(prob, axis=1) if prob is not None else np.ones_like(predictions, dtype=float)
-                votes[name] = predictions * confidence
+                prob = model.predict_proba(subset)
+                confidence = np.max(prob, axis=1) if prob is not None else np.ones(len(predictions), dtype=float)
+                model_votes[name] = predictions
+                model_confidences[name] = confidence
             else:
-                votes[name] = self._convert_return_to_signal(predictions)
+                model_votes[name] = self._convert_return_to_signal(predictions)
+
+        if not model_votes:
+            raise RuntimeError("No models produced usable predictions for inference.")
+        if effective_length <= 0:
+            raise RuntimeError("Models did not return enough predictions for inference.")
+
+        if effective_length != len(frame):
+            frame = frame.tail(effective_length)
+
+        votes: Dict[str, np.ndarray] = {}
+        for name, raw_votes in model_votes.items():
+            trimmed = raw_votes[-effective_length:]
+            if name in model_confidences:
+                confidence = model_confidences[name][-effective_length:]
+                votes[name] = trimmed * confidence
+            else:
+                votes[name] = trimmed
 
         combined_vote = np.sum(list(votes.values()), axis=0)
         signal = np.sign(combined_vote).astype(int)
-        confidence = np.clip(np.abs(combined_vote) / max(len(self.models), 1), 0, 1)
+        contributors = max(len(votes), 1)
+        confidence = np.clip(np.abs(combined_vote) / contributors, 0, 1)
 
         output = frame.copy()
         output["signal"] = signal
@@ -82,3 +109,50 @@ class PredictionEngine:
         signal[returns > self.return_threshold] = 1
         signal[returns < -self.return_threshold] = -1
         return signal
+
+
+def load_artifacts_from_directory(engine: PredictionEngine, directory: Path) -> int:
+    """Load model artifacts from a directory into the given prediction engine."""
+    if not directory.exists():
+        return 0
+
+    loaded = 0
+    for meta_file in directory.rglob("*.json"):
+        try:
+            metadata = json.loads(meta_file.read_text())
+        except Exception:
+            continue
+        if not isinstance(metadata, dict):
+            continue
+        name = metadata.get("name")
+        model_type = metadata.get("model_type")
+        if not name or not model_type:
+            continue
+
+        if model_type == "xgboost":
+            if not meta_file.name.endswith("_meta.json"):
+                continue
+            model_path = meta_file.with_name(meta_file.name.replace("_meta", ""))
+        elif model_type == "random_forest":
+            model_path = meta_file.with_suffix(".joblib")
+        elif model_type == "lstm":
+            model_path = meta_file.with_suffix(".pt")
+        else:
+            continue
+
+        if not model_path.exists():
+            continue
+
+        artifact = ModelArtifact(
+            name=name,
+            model_type=model_type,
+            path=model_path,
+            params=metadata.get("params", {}),
+            metrics=metadata.get("metrics", {}),
+        )
+        try:
+            engine.load_and_register(artifact)
+            loaded += 1
+        except Exception:
+            continue
+    return loaded

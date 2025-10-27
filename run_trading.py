@@ -4,15 +4,17 @@ import argparse
 import logging
 import sys
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 import pandas as pd
 import yaml
 
 from backtesting import AdvancedBacktestEngine
 from brokers import RiskParameters
-from data import MarketDataFetcher
-from strategies import MeanReversionStrategy, MomentumStrategy, MovingAverageCrossStrategy
+from data import MarketDataFetcher, YFinanceDataProvider
+from ml import FeatureEngineer, PredictionEngine
+from ml.prediction import load_artifacts_from_directory
+from strategies import MeanReversionStrategy, MomentumStrategy, MovingAverageCrossStrategy, MLSignalStrategy
 from trading import (
     AlertService,
     PerformanceTracker,
@@ -205,10 +207,16 @@ def run_backtest_mode(config: Dict, logger: logging.Logger) -> None:
     trading_cfg = config.get("trading", {})
     strategy_cfg = trading_cfg.get("strategy", {})
 
-    symbols = trading_cfg.get("symbols", [])
-    if not symbols:
+    configured_symbols = trading_cfg.get("symbols", [])
+    if not configured_symbols:
         raise ValueError("No symbols specified for backtest.")
-    symbol = symbols[0]
+    symbols: List[str] = [str(symbol).upper() for symbol in configured_symbols]
+    primary_symbol = symbols[0]
+    if len(symbols) > 1:
+        logger.warning("Backtest currently supports a single symbol; proceeding with %s.", primary_symbol)
+        symbols = [primary_symbol]
+    else:
+        symbols = [primary_symbol]
 
     backtest_cfg = config.get("backtest", {})
     start = pd.Timestamp(backtest_cfg.get("start"))
@@ -216,32 +224,102 @@ def run_backtest_mode(config: Dict, logger: logging.Logger) -> None:
     initial_capital = backtest_cfg.get("initial_capital", 100_000)
 
     data_cfg = config.get("data", {})
-    data_fetcher = build_data_fetcher(data_cfg)
+    primary_timeframe = data_cfg.get("primary_timeframe", "1d")
+    extra_timeframes = data_cfg.get("extra_timeframes", [])
+    if data_cfg.get("enable_yfinance", True):
+        data_provider = YFinanceDataProvider()
+    else:
+        raise ValueError("Backtest requires yfinance data; set enable_yfinance: true in config.")
 
     engine = AdvancedBacktestEngine(
-        data_provider=data_fetcher,
+        data_provider=data_provider,
         initial_capital=initial_capital,
     )
 
     strategy_type = strategy_cfg.get("type", "momentum").lower()
     params = strategy_cfg.get("params", {})
+    market_data_override: Optional[Dict[str, Dict[str, pd.DataFrame]]] = None
     if strategy_type == "momentum":
-        strategy = MomentumStrategy(symbol=symbol, params=params)
+        strategy = MomentumStrategy(symbol=primary_symbol, params=params)
     elif strategy_type == "mean_reversion":
-        strategy = MeanReversionStrategy(symbol=symbol, params=params)
+        strategy = MeanReversionStrategy(symbol=primary_symbol, params=params)
     elif strategy_type in {"moving_average", "moving_average_cross"}:
-        strategy = MovingAverageCrossStrategy(symbol=symbol, params=params)
+        strategy = MovingAverageCrossStrategy(symbol=primary_symbol, params=params)
+    elif strategy_type == "ml":
+        feature_engineer = FeatureEngineer(
+            forecast_horizon=int(params.get("forecast_horizon", 1)),
+            classification_threshold=float(params.get("classification_threshold", 0.002)),
+            regime_lookback=int(params.get("regime_lookback", 60)),
+        )
+        feature_columns: Optional[List[str]] = None
+        market_data_override = {}
+        for symbol in symbols:
+            history = data_provider.fetch_price_history(
+                symbol=symbol,
+                start=start.to_pydatetime(),
+                end=end.to_pydatetime(),
+                interval=primary_timeframe,
+            )
+            if history.empty:
+                raise ValueError(f"No price history returned for {symbol} using yfinance.")
+            engineered = feature_engineer.engineer(history, symbol=symbol)
+            if engineered.features.empty:
+                raise ValueError(f"Feature engineering produced no usable rows for {symbol}.")
+            feature_columns = (
+                engineered.feature_columns
+                if feature_columns is None
+                else [col for col in feature_columns if col in engineered.feature_columns]
+            )
+            if not feature_columns:
+                raise ValueError("No common feature columns available for ML backtest across symbols.")
+            market_data_override[symbol] = {"primary": engineered.features, "extra": {}}
+            logger.info("Prepared %d engineered rows for %s.", len(engineered.features), symbol)
+        if feature_columns is None:
+            raise ValueError("Unable to determine feature columns for ML backtest.")
+        return_threshold = float(params.get("return_threshold", 0.001))
+        prediction_engine = PredictionEngine(feature_columns=feature_columns, return_threshold=return_threshold)
+        artifacts_dir = Path(params.get("artifacts_dir") or config.get("artifacts_dir", "artifacts"))
+        loaded_models = load_artifacts_from_directory(prediction_engine, artifacts_dir)
+        if loaded_models == 0:
+            raise ValueError(
+                f"No ML model artifacts found in {artifacts_dir}. Train models before running an ML backtest."
+            )
+        aligned_columns: Optional[List[str]] = None
+        for wrapper in prediction_engine.models.values():
+            native_model = getattr(wrapper, "model", None)
+            feature_names = getattr(native_model, "feature_names_in_", None)
+            if feature_names is None:
+                continue
+            ordered = [str(name) for name in feature_names]
+            missing = [col for col in ordered if col not in feature_columns]
+            if missing:
+                raise ValueError(
+                    f"Model '{wrapper.name}' expects feature columns absent in engineered data: {missing[:5]}"
+                )
+            aligned_columns = [col for col in ordered if col in feature_columns]
+            break
+        if aligned_columns:
+            feature_columns = aligned_columns
+            prediction_engine.feature_columns = aligned_columns
+        confidence_threshold = float(params.get("confidence_threshold", 0.0))
+        strategy = MLSignalStrategy(
+            symbol=primary_symbol,
+            prediction_engine=prediction_engine,
+            feature_columns=feature_columns,
+            confidence_threshold=confidence_threshold,
+        )
     else:
         raise ValueError(f"Strategy type '{strategy_type}' is not supported in backtest mode.")
 
-    logger.info("Running backtest for %s from %s to %s", symbol, start.date(), end.date())
+    logger.info("Running backtest for %s from %s to %s", primary_symbol, start.date(), end.date())
     result = engine.run(
         strategy=strategy,
-        symbols=[symbol],
+        symbols=symbols,
         start=start,
         end=end,
-        primary_timeframe=data_cfg.get("primary_timeframe", "1d"),
-        extra_timeframes=data_cfg.get("extra_timeframes", []),
+        primary_timeframe=primary_timeframe,
+        extra_timeframes=extra_timeframes,
+        market_data=market_data_override,
     )
 
     logger.info("Backtest completed. Metrics: %s", result.metrics)

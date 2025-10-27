@@ -497,3 +497,33 @@ requests.exceptions.ConnectionError: HTTPSConnectionPool(host='paper-api.alpaca.
 2025-10-27 16:12:49,273 [INFO] TradingBot - Loaded 3 ML model artifacts for prediction engine.
 2025-10-27 16:12:49,274 [INFO] TradingBot - Configuring strategy handler: ml
 2025-10-27 16:12:49,468 [INFO] TradingBot - Market closed. Sleeping until next open at 2025-10-28 13:30:00+00:00
+2025-10-27 17:43:25,493 [INFO] execution - Performance summary: {'total_return': 0.0, 'annualized_return': 0.0, 'annualized_volatility': 0.0, 'sharpe_ratio': 0.0, 'sortino_ratio': 0.0, 'calmar_ratio': 0.0, 'max_drawdown': 0.0, 'downside_deviation': 0.0, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': 0.0, 'average_win': 0.0, 'average_loss': 0.0, 'risk_adjusted_return': 0.0}
+2025-10-27 17:43:25,578 [INFO] TradingDashboard - 
+==== PAPER TRADING DASHBOARD ====
+Equity: 100,000.00
+Cash: 100,000.00
+Buying Power: 200,000.00
+
+Open Positions:
+ - None
+
+Recent Trades:
+
+Performance Metrics:
+ - average_correlation: 0.0000
+ - total_return: 0.0000
+ - annualized_return: 0.0000
+ - annualized_volatility: 0.0000
+ - sharpe_ratio: 0.0000
+ - sortino_ratio: 0.0000
+ - calmar_ratio: 0.0000
+ - max_drawdown: 0.0000
+ - downside_deviation: 0.0000
+ - win_rate: 0.0000
+ - profit_factor: 0.0000
+ - average_trade_pnl: 0.0000
+ - average_win: 0.0000
+ - average_loss: 0.0000
+ - risk_adjusted_return: 0.0000
+2025-10-27 17:43:25,943 [INFO] execution - Dashboard figure saved to monitoring/paper_dashboard.png
+2025-10-27 17:43:25,944 [INFO] execution - Execution interrupted by user. Shutting down gracefully.

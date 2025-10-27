@@ -25,14 +25,22 @@ class YFinanceDataProvider(DataProvider):
         data = yf.download(symbol, start=start, end=end, interval=interval, auto_adjust=False, threads=True)
         if data.empty:
             raise ValueError(f"No data returned for {symbol}")
+        if isinstance(data.columns, pd.MultiIndex):
+            if symbol in data.columns.get_level_values(-1):
+                data = data.xs(symbol, axis=1, level=-1)
+            else:
+                data = data.droplevel(0, axis=1)
+        data.columns = [str(col).lower() for col in data.columns]
         data = data.rename(
             columns={
-                "Open": "open",
-                "High": "high",
-                "Low": "low",
-                "Close": "close",
-                "Adj Close": "adj_close",
-                "Volume": "volume",
+                "open": "open",
+                "high": "high",
+                "low": "low",
+                "close": "close",
+                "adj close": "adj_close",
+                "adjclose": "adj_close",
+                "adj_close": "adj_close",
+                "volume": "volume",
             }
         )
         return data

@@ -17,6 +17,7 @@ import pandas_market_calendars as mcal
 from brokers import AlpacaPaperBroker, RiskControl, RiskParameters
 from data import MarketDataFetcher
 from ml import FeatureEngineer, FeatureEngineeringOutput, ModelArtifact, PredictionEngine
+from ml.prediction import load_artifacts_from_directory
 from ml.models import ModelWrapper
 from strategies import (
     MLSignalStrategy,

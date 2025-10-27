@@ -435,11 +435,17 @@ class AdvancedBacktestEngine:
             primary = market_data[symbol]["primary"]
             aligned = primary.reindex(union_index).ffill()
             primary_aligned[symbol] = aligned
-        # Determine first date where all symbols have valid prices
-        valid_indices: List[pd.Timestamp] = []
-        for ts in union_index:
-            if all(not np.isnan(primary_aligned[symbol].loc[ts]["close"]) for symbol in symbols):
-                valid_indices.append(ts)
+        close_frames = []
+        for symbol in symbols:
+            if "close" in primary_aligned[symbol].columns:
+                series = primary_aligned[symbol]["close"].copy()
+                series.name = symbol
+                close_frames.append(series)
+        if close_frames:
+            close_df = pd.concat(close_frames, axis=1)
+            valid_indices = close_df.dropna().index.to_list()
+        else:
+            valid_indices = list(union_index)
         return primary_aligned, valid_indices
 
     def _build_portfolio_context(

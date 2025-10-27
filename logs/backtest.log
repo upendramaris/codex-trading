@@ -1,0 +1,242 @@
+2025-10-27 17:44:18,177 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 17:44:18,178 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2023-01-01
+2025-10-27 17:44:18,178 [ERROR] execution - Unrecoverable error: 'MarketDataFetcher' object has no attribute 'fetch_price_history'
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 294, in main
+    run_backtest_mode(config, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 238, in run_backtest_mode
+    result = engine.run(
+             ^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 147, in run
+    market_data = market_data or self._fetch_market_data(symbols, start, end, primary_timeframe, extra_timeframes)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 412, in _fetch_market_data
+    primary = self.data_provider.fetch_price_history(symbol, start=start, end=end, interval=primary_timeframe)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'MarketDataFetcher' object has no attribute 'fetch_price_history'
+2025-10-27 17:45:28,258 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 17:45:28,258 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2023-01-01
+2025-10-27 17:45:29,177 [ERROR] execution - Unrecoverable error: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 297, in main
+    run_backtest_mode(config, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 241, in run_backtest_mode
+    result = engine.run(
+             ^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 149, in run
+    primary_aligned, timeline = self._prepare_primary_data(market_data, symbols)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 441, in _prepare_primary_data
+    if all(not np.isnan(primary_aligned[symbol].loc[ts]["close"]) for symbol in symbols):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 441, in <genexpr>
+    if all(not np.isnan(primary_aligned[symbol].loc[ts]["close"]) for symbol in symbols):
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\generic.py", line 1580, in __nonzero__
+    raise ValueError(
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+2025-10-27 17:46:08,011 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 17:46:08,011 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2023-01-01
+2025-10-27 17:46:09,185 [ERROR] execution - Unrecoverable error: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 297, in main
+    run_backtest_mode(config, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 241, in run_backtest_mode
+    result = engine.run(
+             ^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 149, in run
+    primary_aligned, timeline = self._prepare_primary_data(market_data, symbols)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 441, in _prepare_primary_data
+    if all(pd.notna(primary_aligned[symbol].loc[ts]["close"]) for symbol in symbols):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\generic.py", line 1580, in __nonzero__
+    raise ValueError(
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+2025-10-27 17:46:36,440 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 17:46:36,440 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2023-01-01
+2025-10-27 17:46:36,916 [ERROR] execution - Unrecoverable error: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 297, in main
+    run_backtest_mode(config, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 241, in run_backtest_mode
+    result = engine.run(
+             ^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 149, in run
+    primary_aligned, timeline = self._prepare_primary_data(market_data, symbols)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 441, in _prepare_primary_data
+    if all(pd.notna(primary_aligned[symbol].loc[ts, "close"]) for symbol in symbols):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\generic.py", line 1580, in __nonzero__
+    raise ValueError(
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+2025-10-27 17:47:05,982 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 17:47:05,982 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2023-01-01
+2025-10-27 17:47:06,627 [ERROR] execution - Unrecoverable error: only integer scalar arrays can be converted to a scalar index
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 297, in main
+    run_backtest_mode(config, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 241, in run_backtest_mode
+    result = engine.run(
+             ^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 149, in run
+    primary_aligned, timeline = self._prepare_primary_data(market_data, symbols)
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 441, in _prepare_primary_data
+    if all(pd.notna(primary_aligned[symbol].at[ts, "close"]) for symbol in symbols):
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 441, in <genexpr>
+    if all(pd.notna(primary_aligned[symbol].at[ts, "close"]) for symbol in symbols):
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\indexing.py", line 2576, in __getitem__
+    return super().__getitem__(key)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\indexing.py", line 2528, in __getitem__
+    return self.obj._get_value(*key, takeable=self._takeable)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\frame.py", line 4225, in _get_value
+    series = self._get_item_cache(col)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\frame.py", line 4650, in _get_item_cache
+    res = self._ixs(loc, axis=1)
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\frame.py", line 4021, in _ixs
+    col_mgr = self._mgr.iget(i)
+              ^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\internals\managers.py", line 1035, in iget
+    block = self.blocks[self.blknos[i]]
+            ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+TypeError: only integer scalar arrays can be converted to a scalar index
+2025-10-27 17:49:02,296 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 17:49:02,296 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2023-01-01
+2025-10-27 17:49:03,055 [ERROR] execution - Unrecoverable error: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 297, in main
+    run_backtest_mode(config, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 241, in run_backtest_mode
+    result = engine.run(
+             ^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 191, in run
+    raw_signal = strategy.generate_signals(primary_history, context=context)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\strategies\advanced.py", line 81, in generate_signals
+    if latest_fast > latest_slow and prev_fast <= prev_slow and fast_slope > 0:
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\pandas\core\generic.py", line 1580, in __nonzero__
+    raise ValueError(
+ValueError: The truth value of a Series is ambiguous. Use a.empty, a.bool(), a.item(), a.any() or a.all().
+2025-10-27 17:50:34,242 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 17:50:34,242 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2023-01-01
+2025-10-27 17:50:34,852 [INFO] execution - Backtest completed. Metrics: {'total_return': -0.054235790147194485, 'annualized_return': -0.05444587714859628, 'annualized_volatility': 0.03678082348178005, 'sharpe_ratio': -1.5095873220512301, 'sortino_ratio': -1.1463213913252248, 'calmar_ratio': -0.9103114510149068, 'max_drawdown': 0.059810163969589235, 'downside_deviation': 0.04843655997600291, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': -2238.599670073827, 'average_win': 0.0, 'average_loss': -2238.599670073827, 'risk_adjusted_return': -0.05444587714859628}
+2025-10-27 17:50:34,892 [INFO] AlertService - Backtest finished | context={'metrics': {'total_return': -0.054235790147194485, 'annualized_return': -0.05444587714859628, 'annualized_volatility': 0.03678082348178005, 'sharpe_ratio': -1.5095873220512301, 'sortino_ratio': -1.1463213913252248, 'calmar_ratio': -0.9103114510149068, 'max_drawdown': 0.059810163969589235, 'downside_deviation': 0.04843655997600291, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': -2238.599670073827, 'average_win': 0.0, 'average_loss': -2238.599670073827, 'risk_adjusted_return': -0.05444587714859628}}
+2025-10-27 17:50:34,892 [INFO] execution - Execution completed successfully.
+2025-10-27 17:52:32,991 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 17:52:32,991 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2023-01-01
+2025-10-27 17:52:33,623 [INFO] execution - Backtest completed. Metrics: {'total_return': -0.054235790147194485, 'annualized_return': -0.05444587714859628, 'annualized_volatility': 0.03678082348178005, 'sharpe_ratio': -1.5095873220512301, 'sortino_ratio': -1.1463213913252248, 'calmar_ratio': -0.9103114510149068, 'max_drawdown': 0.059810163969589235, 'downside_deviation': 0.04843655997600291, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': -2238.599670073827, 'average_win': 0.0, 'average_loss': -2238.599670073827, 'risk_adjusted_return': -0.05444587714859628}
+2025-10-27 17:52:33,654 [INFO] AlertService - Backtest finished | context={'metrics': {'total_return': -0.054235790147194485, 'annualized_return': -0.05444587714859628, 'annualized_volatility': 0.03678082348178005, 'sharpe_ratio': -1.5095873220512301, 'sortino_ratio': -1.1463213913252248, 'calmar_ratio': -0.9103114510149068, 'max_drawdown': 0.059810163969589235, 'downside_deviation': 0.04843655997600291, 'win_rate': 0.0, 'profit_factor': 0.0, 'average_trade_pnl': -2238.599670073827, 'average_win': 0.0, 'average_loss': -2238.599670073827, 'risk_adjusted_return': -0.05444587714859628}}
+2025-10-27 17:52:33,655 [INFO] execution - Execution completed successfully.
+2025-10-27 17:53:51,737 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 17:53:51,737 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2025-01-01
+2025-10-27 17:53:52,569 [INFO] execution - Backtest completed. Metrics: {'total_return': 0.022331892197431147, 'annualized_return': 0.00741877696835247, 'annualized_volatility': 0.037152142600188974, 'sharpe_ratio': 0.21780958927535768, 'sortino_ratio': 0.24397841546393473, 'calmar_ratio': 0.1074946986016289, 'max_drawdown': 0.06901528228704713, 'downside_deviation': 0.033167249262846636, 'win_rate': 0.42857142857142855, 'profit_factor': 1.0621448885715394, 'average_trade_pnl': 54.513180066467484, 'average_win': 2173.9855483317883, 'average_loss': -1535.091096132523, 'risk_adjusted_return': 0.00741877696835247}
+2025-10-27 17:53:52,660 [INFO] AlertService - Backtest finished | context={'metrics': {'total_return': 0.022331892197431147, 'annualized_return': 0.00741877696835247, 'annualized_volatility': 0.037152142600188974, 'sharpe_ratio': 0.21780958927535768, 'sortino_ratio': 0.24397841546393473, 'calmar_ratio': 0.1074946986016289, 'max_drawdown': 0.06901528228704713, 'downside_deviation': 0.033167249262846636, 'win_rate': 0.42857142857142855, 'profit_factor': 1.0621448885715394, 'average_trade_pnl': 54.513180066467484, 'average_win': 2173.9855483317883, 'average_loss': -1535.091096132523, 'risk_adjusted_return': 0.00741877696835247}}
+2025-10-27 17:53:52,660 [INFO] execution - Execution completed successfully.
+2025-10-27 17:54:58,441 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 17:54:58,441 [ERROR] execution - Unrecoverable error: Strategy type 'ml' is not supported in backtest mode.
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 297, in main
+    run_backtest_mode(config, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 238, in run_backtest_mode
+    raise ValueError(f"Strategy type '{strategy_type}' is not supported in backtest mode.")
+ValueError: Strategy type 'ml' is not supported in backtest mode.
+2025-10-27 17:55:45,810 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 17:55:45,810 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2025-01-01
+2025-10-27 17:55:46,714 [INFO] execution - Backtest completed. Metrics: {'total_return': 0.022331892197431147, 'annualized_return': 0.00741877696835247, 'annualized_volatility': 0.037152142600188974, 'sharpe_ratio': 0.21780958927535768, 'sortino_ratio': 0.24397841546393473, 'calmar_ratio': 0.1074946986016289, 'max_drawdown': 0.06901528228704713, 'downside_deviation': 0.033167249262846636, 'win_rate': 0.42857142857142855, 'profit_factor': 1.0621448885715394, 'average_trade_pnl': 54.513180066467484, 'average_win': 2173.9855483317883, 'average_loss': -1535.091096132523, 'risk_adjusted_return': 0.00741877696835247}
+2025-10-27 17:55:46,805 [INFO] AlertService - Backtest finished | context={'metrics': {'total_return': 0.022331892197431147, 'annualized_return': 0.00741877696835247, 'annualized_volatility': 0.037152142600188974, 'sharpe_ratio': 0.21780958927535768, 'sortino_ratio': 0.24397841546393473, 'calmar_ratio': 0.1074946986016289, 'max_drawdown': 0.06901528228704713, 'downside_deviation': 0.033167249262846636, 'win_rate': 0.42857142857142855, 'profit_factor': 1.0621448885715394, 'average_trade_pnl': 54.513180066467484, 'average_win': 2173.9855483317883, 'average_loss': -1535.091096132523, 'risk_adjusted_return': 0.00741877696835247}}
+2025-10-27 17:55:46,805 [INFO] execution - Execution completed successfully.
+2025-10-27 18:04:04,412 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 18:04:04,412 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2025-01-01
+2025-10-27 18:04:05,245 [INFO] execution - Backtest completed. Metrics: {'total_return': 0.022331892197431147, 'annualized_return': 0.00741877696835247, 'annualized_volatility': 0.037152142600188974, 'sharpe_ratio': 0.21780958927535768, 'sortino_ratio': 0.24397841546393473, 'calmar_ratio': 0.1074946986016289, 'max_drawdown': 0.06901528228704713, 'downside_deviation': 0.033167249262846636, 'win_rate': 0.42857142857142855, 'profit_factor': 1.0621448885715394, 'average_trade_pnl': 54.513180066467484, 'average_win': 2173.9855483317883, 'average_loss': -1535.091096132523, 'risk_adjusted_return': 0.00741877696835247}
+2025-10-27 18:04:05,339 [INFO] AlertService - Backtest finished | context={'metrics': {'total_return': 0.022331892197431147, 'annualized_return': 0.00741877696835247, 'annualized_volatility': 0.037152142600188974, 'sharpe_ratio': 0.21780958927535768, 'sortino_ratio': 0.24397841546393473, 'calmar_ratio': 0.1074946986016289, 'max_drawdown': 0.06901528228704713, 'downside_deviation': 0.033167249262846636, 'win_rate': 0.42857142857142855, 'profit_factor': 1.0621448885715394, 'average_trade_pnl': 54.513180066467484, 'average_win': 2173.9855483317883, 'average_loss': -1535.091096132523, 'risk_adjusted_return': 0.00741877696835247}}
+2025-10-27 18:04:05,339 [INFO] execution - Execution completed successfully.
+2025-10-27 18:04:33,731 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 18:04:34,195 [INFO] execution - Prepared 553 engineered rows for SPY.
+2025-10-27 18:04:34,277 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2025-01-01
+2025-10-27 18:04:34,287 [ERROR] execution - Unrecoverable error: The feature names should match those that were passed during fit.
+Feature names must be in the same order as they were in fit.
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 355, in main
+    run_backtest_mode(config, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 298, in run_backtest_mode
+    result = engine.run(
+             ^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 191, in run
+    raw_signal = strategy.generate_signals(primary_history, context=context)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\strategies\advanced.py", line 108, in generate_signals
+    signals_df = self.prediction_engine.generate_signals(latest_features)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\ml\prediction.py", line 62, in generate_signals
+    predictions = model.predict(frame[self.feature_columns])
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\ml\models.py", line 98, in predict
+    return self.model.predict(X)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\ensemble\_forest.py", line 903, in predict
+    proba = self.predict_proba(X)
+            ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\ensemble\_forest.py", line 945, in predict_proba
+    X = self._validate_X_predict(X)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\ensemble\_forest.py", line 637, in _validate_X_predict
+    X = validate_data(
+        ^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\utils\validation.py", line 2929, in validate_data
+    _check_feature_names(_estimator, X, reset=reset)
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\utils\validation.py", line 2787, in _check_feature_names
+    raise ValueError(message)
+ValueError: The feature names should match those that were passed during fit.
+Feature names must be in the same order as they were in fit.
+
+2025-10-27 18:05:37,757 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 18:05:38,282 [INFO] execution - Prepared 553 engineered rows for SPY.
+2025-10-27 18:05:38,359 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2025-01-01
+2025-10-27 18:05:38,455 [ERROR] execution - Unrecoverable error: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (3,) + inhomogeneous part.
+Traceback (most recent call last):
+  File "D:\GitHub\codex-trading\run_trading.py", line 372, in main
+    run_backtest_mode(config, logger)
+  File "D:\GitHub\codex-trading\run_trading.py", line 315, in run_backtest_mode
+    result = engine.run(
+             ^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\backtesting\engine.py", line 191, in run
+    raw_signal = strategy.generate_signals(primary_history, context=context)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\strategies\advanced.py", line 108, in generate_signals
+    signals_df = self.prediction_engine.generate_signals(latest_features)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\GitHub\codex-trading\ml\prediction.py", line 70, in generate_signals
+    combined_vote = np.sum(list(votes.values()), axis=0)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\numpy\_core\fromnumeric.py", line 2466, in sum
+    return _wrapreduction(
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\upendra\AppData\Local\Programs\Python\Python311\Lib\site-packages\numpy\_core\fromnumeric.py", line 86, in _wrapreduction
+    return ufunc.reduce(obj, axis, dtype, out, **passkwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: setting an array element with a sequence. The requested array has an inhomogeneous shape after 1 dimensions. The detected shape was (3,) + inhomogeneous part.
+2025-10-27 18:06:44,597 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 18:06:45,239 [INFO] execution - Prepared 553 engineered rows for SPY.
+2025-10-27 18:06:45,331 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2025-01-01
+2025-10-27 18:07:29,000 [INFO] execution - Backtest completed. Metrics: {'total_return': 0.21125126483367818, 'annualized_return': 0.09126324701307187, 'annualized_volatility': 0.039008022938814134, 'sharpe_ratio': 2.2628565247942625, 'sortino_ratio': 3.168502105964433, 'calmar_ratio': 2.882349888951367, 'max_drawdown': 0.03166279269664743, 'downside_deviation': 0.027858450546793062, 'win_rate': 0.9230769230769231, 'profit_factor': 12.060386653846752, 'average_trade_pnl': 77.38141568999178, 'average_win': 91.40915600619275, 'average_loss': -90.95146810441979, 'risk_adjusted_return': 0.09126324701307187}
+2025-10-27 18:07:29,189 [INFO] AlertService - Backtest finished | context={'metrics': {'total_return': 0.21125126483367818, 'annualized_return': 0.09126324701307187, 'annualized_volatility': 0.039008022938814134, 'sharpe_ratio': 2.2628565247942625, 'sortino_ratio': 3.168502105964433, 'calmar_ratio': 2.882349888951367, 'max_drawdown': 0.03166279269664743, 'downside_deviation': 0.027858450546793062, 'win_rate': 0.9230769230769231, 'profit_factor': 12.060386653846752, 'average_trade_pnl': 77.38141568999178, 'average_win': 91.40915600619275, 'average_loss': -90.95146810441979, 'risk_adjusted_return': 0.09126324701307187}}
+2025-10-27 18:07:29,191 [INFO] execution - Execution completed successfully.
+2025-10-27 18:07:39,978 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 18:07:39,980 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2025-01-01
+2025-10-27 18:07:40,842 [INFO] execution - Backtest completed. Metrics: {'total_return': 0.022331892197431147, 'annualized_return': 0.00741877696835247, 'annualized_volatility': 0.037152142600188974, 'sharpe_ratio': 0.21780958927535768, 'sortino_ratio': 0.24397841546393473, 'calmar_ratio': 0.1074946986016289, 'max_drawdown': 0.06901528228704713, 'downside_deviation': 0.033167249262846636, 'win_rate': 0.42857142857142855, 'profit_factor': 1.0621448885715394, 'average_trade_pnl': 54.513180066467484, 'average_win': 2173.9855483317883, 'average_loss': -1535.091096132523, 'risk_adjusted_return': 0.00741877696835247}
+2025-10-27 18:07:40,951 [INFO] AlertService - Backtest finished | context={'metrics': {'total_return': 0.022331892197431147, 'annualized_return': 0.00741877696835247, 'annualized_volatility': 0.037152142600188974, 'sharpe_ratio': 0.21780958927535768, 'sortino_ratio': 0.24397841546393473, 'calmar_ratio': 0.1074946986016289, 'max_drawdown': 0.06901528228704713, 'downside_deviation': 0.033167249262846636, 'win_rate': 0.42857142857142855, 'profit_factor': 1.0621448885715394, 'average_trade_pnl': 54.513180066467484, 'average_win': 2173.9855483317883, 'average_loss': -1535.091096132523, 'risk_adjusted_return': 0.00741877696835247}}
+2025-10-27 18:07:40,951 [INFO] execution - Execution completed successfully.
+2025-10-27 18:22:00,031 [INFO] execution - Starting trading execution in backtest mode using config configs\backtest.sample.yaml
+2025-10-27 18:22:00,799 [INFO] execution - Prepared 553 engineered rows for SPY.
+2025-10-27 18:22:00,871 [INFO] execution - Running backtest for SPY from 2022-01-01 to 2025-01-01
+2025-10-27 18:22:43,468 [INFO] execution - Backtest completed. Metrics: {'total_return': 0.21125126483367818, 'annualized_return': 0.09126324701307187, 'annualized_volatility': 0.039008022938814134, 'sharpe_ratio': 2.2628565247942625, 'sortino_ratio': 3.168502105964433, 'calmar_ratio': 2.882349888951367, 'max_drawdown': 0.03166279269664743, 'downside_deviation': 0.027858450546793062, 'win_rate': 0.9230769230769231, 'profit_factor': 12.060386653846752, 'average_trade_pnl': 77.38141568999178, 'average_win': 91.40915600619275, 'average_loss': -90.95146810441979, 'risk_adjusted_return': 0.09126324701307187}
+2025-10-27 18:22:43,647 [INFO] AlertService - Backtest finished | context={'metrics': {'total_return': 0.21125126483367818, 'annualized_return': 0.09126324701307187, 'annualized_volatility': 0.039008022938814134, 'sharpe_ratio': 2.2628565247942625, 'sortino_ratio': 3.168502105964433, 'calmar_ratio': 2.882349888951367, 'max_drawdown': 0.03166279269664743, 'downside_deviation': 0.027858450546793062, 'win_rate': 0.9230769230769231, 'profit_factor': 12.060386653846752, 'average_trade_pnl': 77.38141568999178, 'average_win': 91.40915600619275, 'average_loss': -90.95146810441979, 'risk_adjusted_return': 0.09126324701307187}}
+2025-10-27 18:22:43,649 [INFO] execution - Execution completed successfully.
