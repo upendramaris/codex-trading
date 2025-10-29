@@ -77,6 +77,15 @@ class RiskSettings:
 
 
 @dataclass
+class LLMSettings:
+    default_provider: str = field(default_factory=lambda: os.environ.get("LLM_PROVIDER", "deepseek"))
+    openai_api_key: Optional[str] = field(default_factory=lambda: os.environ.get("OPENAI_API_KEY"))
+    openai_model: str = field(default_factory=lambda: os.environ.get("OPENAI_MODEL", "gpt-4o-mini"))
+    deepseek_api_key: Optional[str] = field(default_factory=lambda: os.environ.get("DEEPSEEK_API_KEY"))
+    deepseek_model: str = field(default_factory=lambda: os.environ.get("DEEPSEEK_MODEL", "deepseek-chat"))
+
+
+@dataclass
 class Settings:
     """Aggregates configuration for the trading framework."""
 
@@ -84,6 +93,7 @@ class Settings:
     data: DataSourceSettings = field(default_factory=DataSourceSettings)
     strategies: StrategySettings = field(default_factory=StrategySettings)
     risk: RiskSettings = field(default_factory=RiskSettings)
+    llm: LLMSettings = field(default_factory=LLMSettings)
 
     @classmethod
     def load(cls, dotenv_path: Optional[Path] = None) -> "Settings":
@@ -96,6 +106,7 @@ class Settings:
             "data": self.data.__dict__,
             "strategies": self.strategies.__dict__,
             "risk": self.risk.__dict__,
+            "llm": self.llm.__dict__,
         }
 
 

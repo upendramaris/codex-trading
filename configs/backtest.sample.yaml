@@ -37,12 +37,19 @@ trading:
    
 
 backtest:
-  start: 2022-01-01
+  start: 2015-01-01
   end: 2025-01-01
   initial_capital: 100000
+  slippage:
+    bps: 0
+    fixed: 0.05
+  commission:
+    per_share: 0.0
+    percentage: 0.0
+    minimum: 0.7
 
 risk:
-  max_position_percent: 0.3
+  max_position_percent: 0.75
   max_single_order_value: 150000
   max_leverage: 2.0
   sector_limits:

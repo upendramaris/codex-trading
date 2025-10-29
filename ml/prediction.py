@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Callable, Dict, Optional
 
 import numpy as np
 import pandas as pd
@@ -27,6 +27,7 @@ class PredictionEngine:
         self.feature_columns = feature_columns
         self.return_threshold = return_threshold
         self.models: Dict[str, ModelWrapper] = {}
+        self.external_signal_generators: Dict[str, Callable[[pd.DataFrame], np.ndarray]] = {}
 
     def register_model(self, name: str, model: ModelWrapper) -> None:
         if not model.fitted:
@@ -44,6 +45,14 @@ class PredictionEngine:
         else:
             raise ValueError(f"Unsupported model type: {kind}")
         self.register_model(model.name, model)
+
+    def register_external_signal(self, name: str, generator: Callable[[pd.DataFrame], np.ndarray]) -> None:
+        """
+        Register an external signal source (e.g. LLM sentiment) that emits vote arrays.
+        """
+        if not callable(generator):
+            raise ValueError("Signal generator must be callable.")
+        self.external_signal_generators[name] = generator
 
     def generate_signals(self, data: pd.DataFrame) -> pd.DataFrame:
         if not self.models:
@@ -90,6 +99,16 @@ class PredictionEngine:
                 votes[name] = trimmed * confidence
             else:
                 votes[name] = trimmed
+
+        # External signals (e.g. LLM sentiment) are treated as additional votes.
+        for name, generator in self.external_signal_generators.items():
+            try:
+                signal_array = generator(frame.tail(effective_length))
+            except Exception as exc:  # pragma: no cover - defensive
+                raise RuntimeError(f"External signal generator '{name}' failed") from exc
+            if signal_array is None or len(signal_array) == 0:
+                continue
+            votes[name] = np.asarray(signal_array)[-effective_length:]
 
         combined_vote = np.sum(list(votes.values()), axis=0)
         signal = np.sign(combined_vote).astype(int)

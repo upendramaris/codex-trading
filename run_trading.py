@@ -9,7 +9,7 @@ from typing import Dict, List, Optional
 import pandas as pd
 import yaml
 
-from backtesting import AdvancedBacktestEngine
+from backtesting import AdvancedBacktestEngine, CommissionModel, SlippageModel
 from brokers import RiskParameters
 from data import MarketDataFetcher, YFinanceDataProvider
 from ml import FeatureEngineer, PredictionEngine
@@ -231,9 +231,24 @@ def run_backtest_mode(config: Dict, logger: logging.Logger) -> None:
     else:
         raise ValueError("Backtest requires yfinance data; set enable_yfinance: true in config.")
 
+    slippage_cfg = backtest_cfg.get("slippage", {})
+    commission_cfg = backtest_cfg.get("commission", {})
+
+    slippage_model = SlippageModel(
+        bps=float(slippage_cfg.get("bps", 0.0)),
+        fixed=float(slippage_cfg.get("fixed", 0.0)),
+    )
+    commission_model = CommissionModel(
+        per_share=float(commission_cfg.get("per_share", 0.0)),
+        percentage=float(commission_cfg.get("percentage", 0.0)),
+        minimum=float(commission_cfg.get("minimum", 0.0)),
+    )
+
     engine = AdvancedBacktestEngine(
         data_provider=data_provider,
         initial_capital=initial_capital,
+        slippage_model=slippage_model,
+        commission_model=commission_model,
     )
 
     strategy_type = strategy_cfg.get("type", "momentum").lower()
